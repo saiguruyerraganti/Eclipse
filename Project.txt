@@ -1,0 +1,24 @@
+1.Create a database with custom name
+2.Create a table called Deviceinfo with columns DeviceName, DeviceIp, InterfaceName, PolicyMap etc.,
+3.Fetch data from database table
+4.The inputs given by the user as parameters and values stored in either CSV or PDF
+5.The user is allowed to save the data with type(Email or Dir or Both)
+6.If the savetype is Email, the data has to be sent in the email
+7.Or if it is Dir,the data needs to be stored in the given directory
+
+Task Management:
+1. need to create a table with task details like(task_id,task_type,task_summary, task_start_date,task_end_date,assigned_user,%complete)
+2.Need to have a provision to insert the data/modify the data and delete the data from UI
+3.Need to create a table task_execution with following details(task_id,date,execution_summary,%completed)
+4.Need to create UI to add task execution details from UI
+
+User Management
+1. Need to have a provision to add/delete/modify user data
+
+Reports:
+-task execution reports(Task summary,User Reports)
+-email Notification
+
+For UI:jQuery + Jsp/Angular
+For server side:Spring boot/Tomcat with spring/Tomcat with regular java
+For DB:Postgres

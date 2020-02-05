@@ -1,0 +1,172 @@
+
+//Address
+package oneeeeone;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+@Entity
+@Table(name = "ADDRESS")
+public class Address {
+ private long addressId;
+ private String street;
+ private String city;
+ private String state;
+ private String zipcode;
+ public Address() {
+ }
+ public Address(String street, String city, String state, String zipcode) {
+  this.street = street;
+  this.city = city;
+  this.state = state;
+  this.zipcode = zipcode;
+ }
+ @Id
+ @GeneratedValue
+ @Column(name = "ADDRESS_ID")
+ public long getAddressId() {
+  return this.addressId;
+ }
+ public void setAddressId(long addressId) {
+  this.addressId = addressId;
+ }
+ 
+ @Column(name = "ADDRESS_STREET", nullable = false, length=250)
+ public String getStreet() {
+  return this.street;
+ }
+ public void setStreet(String street) {
+  this.street = street;
+ }
+ @Column(name = "ADDRESS_CITY", nullable = false, length=50)
+ public String getCity() {
+  return this.city;
+ }
+ public void setCity(String city) {
+  this.city = city;
+ }
+ @Column(name = "ADDRESS_STATE", nullable = false, length=50)
+ public String getState() {
+  return this.state;
+ }
+ public void setState(String state) {
+  this.state = state;
+ }
+ @Column(name = "ADDRESS_ZIPCODE", nullable = false, length=10)
+ public String getZipcode() {
+  return this.zipcode;
+ }
+ public void setZipcode(String zipcode) {
+  this.zipcode = zipcode;
+ }
+}
+
+----------------------------------------
+//Employee
+
+package oneeeeone;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+@Entity
+@Table(name = "employ")
+public class Employ {
+ private long empId;
+ private String empName;
+ private Address empAddress;
+ public Employ() {
+ }
+ public Employ(String empName, Address empAddress) {
+  this.empName = empName;
+  this.empAddress = empAddress;
+ }
+ @Id
+ @GeneratedValue
+ @Column(name = "emp_ID")
+ public long getempId() {
+  return this.empId;
+ }
+ public void setempId(long empId) {
+  this.empId = empId;
+ }
+ @Column(name = "emp_NAME", nullable = false, length = 100)
+ public String getempName() {
+  return this.empName;
+ }
+ public void setempName(String empName) {
+  this.empName = empName;
+ }
+ @OneToOne(cascade = CascadeType.ALL)
+ public Address getempAddress() {
+  return this.empAddress;
+ }
+ public void setempAddress(Address empAddress) {
+  this.empAddress = empAddress;
+ }
+}
+----------------------
+//Main.jaava
+
+package oneeeeone;
+
+import org.hibernate.*;  
+import org.hibernate.boot.Metadata;  
+import org.hibernate.boot.MetadataSources;  
+import org.hibernate.boot.registry.StandardServiceRegistry;  
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;  
+
+public class Main {
+ public static void main(String[] args) {
+  StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();  
+     Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();  
+       
+     SessionFactory factory=meta.getSessionFactoryBuilder().build();  
+     Session session=factory.openSession();  
+       
+     Transaction t=session.beginTransaction();   
+       
+     Employ e1=new Employ(); 
+     
+     
+     
+         
+     Address address1 = new Address("Satyanarayanapuram", "AndhraPradesh", "AP", "520011");
+  Address address2 = new Address("SrinagarColony", "AndhraPradesh", "AnP", "520034");
+  Employ emp1 = new Employ("gnanitha", address1);
+  Employ emp2 = new Employ("Susan", address2);
+  session.save(emp1);
+  session.save(emp2);
+  t.commit();
+     session.close();    
+     System.out.println("success");    
+ }
+}
+---------------------------
+hibernate.cfg.xml
+
+<?xml version='1.0' encoding='UTF-8'?>    
+<!DOCTYPE hibernate-configuration PUBLIC    
+          "-//Hibernate/Hibernate Configuration DTD 5.3//EN"    
+          "http://hibernate.sourceforge.net/hibernate-configuration-5.3.dtd">    
+     
+<hibernate-configuration>    
+    
+    <session-factory>    
+        <property name="hbm2ddl.auto">update</property>    
+        <property name="dialect">org.hibernate.dialect.Oracle9Dialect</property>    
+        <property name="connection.url">jdbc:oracle:thin:@localhost:1521:xe</property>    
+        <property name="connection.username">system</property>    
+        <property name="connection.password">system</property>    
+        <property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>    
+      
+    <mapping class="oneeeeone.Employ"/>
+     <mapping class="oneeeeone.Address"/>     
+    </session-factory>    
+    
+</hibernate-configuration>    
+
